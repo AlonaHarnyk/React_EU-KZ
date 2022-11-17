@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
+import { Paragraph, Span, Title } from './User.styled';
 
 export const User = ({ user: { name, email, isOnline } }) => {
+  const isEndsBiz = email.endsWith('biz')
+  console.log(isEndsBiz)
   return (
     <>
-      <p>Name: {name}</p>
-      <p>Email: {email}</p>
-      {isOnline && <p>Is online: {isOnline}</p>}
+      <Title>User</Title>
+      <Paragraph>Name: <Span>{name}</Span></Paragraph>
+      <Paragraph>Email: <Span isRed={isEndsBiz}>{email}</Span></Paragraph>
+      {isOnline && <Paragraph>Is online: {isOnline}</Paragraph>}
     </>
   );
 };
