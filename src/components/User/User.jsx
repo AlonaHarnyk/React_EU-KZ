@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types';
-import { Paragraph, Span, Title } from './User.styled';
+import { Paragraph, Span } from './User.styled';
 
-export const User = ({ user: { name, email, isOnline } }) => {
+export const User = ({ user: { name, email, id, company}, deleteUser, showCompany }) => {
   const isEndsBiz = email.endsWith('biz')
-  console.log(isEndsBiz)
   return (
     <>
-      <Title>User</Title>
       <Paragraph>Name: <Span>{name}</Span></Paragraph>
       <Paragraph>Email: <Span isRed={isEndsBiz}>{email}</Span></Paragraph>
-      {isOnline && <Paragraph>Is online: {isOnline}</Paragraph>}
+      <button onClick={() => deleteUser({ id, name })}>Delete</button>
+      <button onClick={() => showCompany(company)}>Show company</button>
     </>
   );
 };

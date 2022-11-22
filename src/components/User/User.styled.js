@@ -38,7 +38,3 @@ export const Span = styled.span`
     color: tomato;
   }
 `;
-
-export const Title = styled.h3`
-color: ${(props) => props.theme.colors.primary};
-`
