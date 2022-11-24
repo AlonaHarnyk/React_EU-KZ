@@ -1,14 +1,28 @@
 import PropTypes from 'prop-types';
 import { Paragraph, Span } from './User.styled';
+import UpdateUserForm from 'components/UpdateUserForm/UpdateUserForm';
 
-export const User = ({ user: { name, email, id, company}, deleteUser, showCompany }) => {
-  const isEndsBiz = email.endsWith('biz')
+export const User = ({
+  user: { name, email, id },
+  deleteUser,
+  updateUser,
+  userToUpdate,
+  showUpdateForm,
+}) => {
+  const isEndsBiz = email.endsWith('biz');
   return (
     <>
-      <Paragraph>Name: <Span>{name}</Span></Paragraph>
-      <Paragraph>Email: <Span isRed={isEndsBiz}>{email}</Span></Paragraph>
+      <Paragraph>
+        Name: <Span>{name}</Span>
+      </Paragraph>
+      <Paragraph>
+        Email: <Span isRed={isEndsBiz}>{email}</Span>
+      </Paragraph>
       <button onClick={() => deleteUser({ id, name })}>Delete</button>
-      <button onClick={() => showCompany(company)}>Show company</button>
+      <button onClick={() => showUpdateForm(id)}>Update user</button>
+      {userToUpdate && userToUpdate.id === id && (
+        <UpdateUserForm updateUser={updateUser} userToUpdate={userToUpdate} />
+      )}
     </>
   );
 };
