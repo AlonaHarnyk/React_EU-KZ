@@ -5,7 +5,6 @@ export const moviesMapper = array => {
       title,
       image,
       votes,
-      watched: false,
     })
   );
 };

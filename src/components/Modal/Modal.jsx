@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import styles from './Modal.module.css'
 
 class Modal extends Component {
   componentDidMount() {
@@ -23,9 +24,9 @@ class Modal extends Component {
     } = this.props;
 
     return (
-      <div>
-        <div>
-          <button onClick={closeModal}>Close</button>
+      <div className={styles.backdrop}>
+        <div className={styles.modal}>
+          <button className={styles.close} onClick={closeModal}>Close</button>
           <img src={`https://image.tmdb.org/t/p/w500${src}`} alt={alt} />
         </div>
       </div>
