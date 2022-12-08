@@ -1,15 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import { MoviesGallery } from 'components/MoviesGallery/MoviesGallery';
 import Modal from 'components/Modal/Modal';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
 import { Notification } from './Notification/Notification';
+import { AuthNav } from './AuthNav/AuthNav';
+
+import { TestForm } from './TestForm/TestForm';
 
 import { fetchMovies } from 'services/moviesApi';
 
 import { GlobalStyles } from '../utils/GlobalStyles';
 import { moviesMapper } from '../utils/mapper';
+
+import { AuthContext } from 'context/authContext';
+
+console.log(AuthContext);
 
 const App = () => {
   const [movies, setMovies] = useState([]);
@@ -18,6 +25,9 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const { isAuth } = useContext(AuthContext);
+  
 
   useEffect(() => {
     if (isShown) {
@@ -57,25 +67,35 @@ const App = () => {
 
   return (
     <>
-      <Button
-        text={isShown && !error ? 'Hide movies' : 'Show movies'}
-        clickHandler={showMovies}
-      />
-      {isShown && (
+      <AuthNav />
+      {!isAuth ? (
+        <Notification text="Login, please!" />
+      ) : (
         <>
-          <MoviesGallery
-            movies={movies}
-            deleteMovie={deleteMovie}
-            openModal={openModal}
+          <Button
+            text={isShown && !error ? 'Hide movies' : 'Show movies'}
+            clickHandler={showMovies}
           />
-          {!isLoading && !error && (
-            <Button text="Load more" clickHandler={loadMore} />
+          {isShown && (
+            <>
+              <MoviesGallery
+                movies={movies}
+                deleteMovie={deleteMovie}
+                openModal={openModal}
+              />
+              {!isLoading && !error && (
+                <Button text="Load more" clickHandler={loadMore} />
+              )}
+            </>
+          )}
+          {isLoading && <Loader />}
+          {error && <Notification text={error} />}
+          {currentImage && (
+            <Modal image={currentImage} closeModal={closeModal} />
           )}
         </>
       )}
-      {isLoading && <Loader />}
-      {error && <Notification text={error} />}
-      {currentImage && <Modal image={currentImage} closeModal={closeModal} />}
+      <TestForm/>
       <GlobalStyles />
     </>
   );
