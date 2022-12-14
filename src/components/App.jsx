@@ -1,104 +1,20 @@
-import { useState, useEffect, useContext } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-import { MoviesGallery } from 'components/MoviesGallery/MoviesGallery';
-import Modal from 'components/Modal/Modal';
-import { Button } from './Button/Button';
-import { Loader } from './Loader/Loader';
-import { Notification } from './Notification/Notification';
-import { AuthNav } from './AuthNav/AuthNav';
+import { Layout } from './Layout/Layout';
 
-import { TestForm } from './TestForm/TestForm';
+import { HomePage } from 'pages/HomePage';
+import { EventsPage } from 'pages/EventsPage';
+import { EventSubPage } from 'pages/EventSubPage';
 
-import { fetchMovies } from 'services/moviesApi';
-
-import { GlobalStyles } from '../utils/GlobalStyles';
-import { moviesMapper } from '../utils/mapper';
-
-import { AuthContext } from 'context/authContext';
-
-console.log(AuthContext);
-
-const App = () => {
-  const [movies, setMovies] = useState([]);
-  const [currentImage, setCurrentImage] = useState(null);
-  const [isShown, setIsShown] = useState(false);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const { isAuth } = useContext(AuthContext);
-  
-
-  useEffect(() => {
-    if (isShown) {
-      setIsLoading(true);
-      fetchMovies(page)
-        .then(({ data: { results } }) => {
-          setMovies(prevMovies => [...prevMovies, ...moviesMapper(results)]);
-          setError('');
-        })
-        .catch(error => {
-          setError(error.message);
-          setIsShown(false);
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, [isShown, page]);
-
-  const deleteMovie = movieId => {
-    setMovies(prevMovies => prevMovies.filter(({ id }) => id !== movieId));
-  };
-
-  const openModal = data => {
-    setCurrentImage(data);
-  };
-
-  const closeModal = () => {
-    setCurrentImage(null);
-  };
-
-  const showMovies = () => {
-    setIsShown(prevIsShown => !prevIsShown);
-  };
-
-  const loadMore = () => {
-    setPage(prevPage => prevPage + 1);
-  };
-
+export const App = () => {
   return (
-    <>
-      <AuthNav />
-      {!isAuth ? (
-        <Notification text="Login, please!" />
-      ) : (
-        <>
-          <Button
-            text={isShown && !error ? 'Hide movies' : 'Show movies'}
-            clickHandler={showMovies}
-          />
-          {isShown && (
-            <>
-              <MoviesGallery
-                movies={movies}
-                deleteMovie={deleteMovie}
-                openModal={openModal}
-              />
-              {!isLoading && !error && (
-                <Button text="Load more" clickHandler={loadMore} />
-              )}
-            </>
-          )}
-          {isLoading && <Loader />}
-          {error && <Notification text={error} />}
-          {currentImage && (
-            <Modal image={currentImage} closeModal={closeModal} />
-          )}
-        </>
-      )}
-      <TestForm/>
-      <GlobalStyles />
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="events" element={<EventsPage />}>
+          <Route path=":eventId" element={<EventSubPage />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 };
-
-export default App;
