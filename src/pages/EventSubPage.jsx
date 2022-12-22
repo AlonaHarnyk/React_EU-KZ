@@ -2,9 +2,9 @@ import { useFetchEvent } from 'hooks/useFetchEvent';
 import { Link, useLocation } from 'react-router-dom';
 export const EventSubPage = () => {
   const event = useFetchEvent();
-  console.log(event);
+  // console.log(event);
   const location = useLocation()
-  // console.log(location)
+console.log('info', location)
 
   return (
     event && (

@@ -5,7 +5,7 @@ import { fetchEvents } from 'services/eventsApi';
 export const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const location = useLocation()
-  // console.log(location)
+  console.log('events', location)
 
   useEffect(() => {
     fetchEvents().then(setEvents);

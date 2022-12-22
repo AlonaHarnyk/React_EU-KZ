@@ -7,6 +7,7 @@ import { EventsPage } from 'pages/EventsPage';
 import { EventSubPage } from 'pages/EventSubPage';
 import { EventDetailsPage } from 'pages/EventDetailsPage';
 import { SearchEventsPage } from 'pages/SearchEventsPage';
+import {TestPage} from 'pages/TestPage'
 
 export const App = () => {
   return (
@@ -20,7 +21,9 @@ export const App = () => {
           <Route path=":eventId" element={<EventSubPage />} />
         </Route>
         <Route path="events/:eventId/details" element={<EventDetailsPage />} />
-        <Route path='search/:eventId/details' element={<EventDetailsPage />} />
+        <Route path='search/:eventId/details' element={<EventDetailsPage />} >
+          <Route path='test' element={<TestPage/>} />
+        </Route>
       </Route>
     </Routes>
   );
