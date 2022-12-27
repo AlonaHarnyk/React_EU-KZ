@@ -1,3 +1,27 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { getUsers } from 'redux/users/users-selectors';
+import { deleteUser } from 'redux/users/users-actions';
+
 export const HomePage = () => {
-    return <h1>WELCOME TO EVENT'S APP!!!</h1>
-}
+  const users = useSelector(getUsers);
+  console.log(users);
+  const dispatch = useDispatch();
+
+  return (
+    <ul>
+      {users.map(({ name, age, id }) => (
+        <li key={id}>
+          <p>Name: {name}</p>
+          <p>Age: {age}</p>
+          <button
+            onClick={() => {
+              dispatch(deleteUser(id));
+            }}
+          >
+            Delete
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+};
