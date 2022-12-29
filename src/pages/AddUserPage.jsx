@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addUser } from 'redux/users/users-actions';
+import { addUser } from 'redux/users/usersSlice';
 import { nanoid } from 'nanoid';
+import { getStatus } from 'servises/answerApi';
 
 export const AddUserPage = () => {
   const [name, setName] = useState('');
@@ -13,9 +14,10 @@ export const AddUserPage = () => {
     name === 'name' ? setName(value) : setAge(value);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const user = { name, age, id: nanoid() };
+    const status = await getStatus();
+    const user = { name, age, id: nanoid(), status };
     dispatch(addUser(user));
     setName('');
     setAge('');
